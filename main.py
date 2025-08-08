@@ -125,10 +125,31 @@ chat_last_command = {}
 chat_pending_commands = {}
 QUEUE_LIMIT = 50
 MAX_DURATION_SECONDS = 36000
-LOCAL_VC_LIMIT = 10
+LOCAL_VC_LIMIT = 50
 playback_mode = {}
 
+async def save_user_playlist(user_id, playlist):
+    """
+    Save a user's playlist to the database.
+    """
+    collection = db["playlists"]
+    existing_playlist = collection.find_one({"user_id": user_id})
+    
+    if existing_playlist:
+        collection.update_one({"user_id": user_id}, {"$set": {"playlist": playlist}})
+    else:
+        collection.insert_one({"user_id": user_id, "playlist": playlist})
 
+async def load_user_playlist(user_id):
+    """
+    Load a user's playlist from the database.
+    """
+    collection = db["playlists"]
+    playlist_data = collection.find_one({"user_id": user_id})
+    
+    if playlist_data:
+        return playlist_data.get("playlist", [])
+    return []
 
 async def process_pending_command(chat_id, delay):
     await asyncio.sleep(delay)  
@@ -178,7 +199,7 @@ def safe_handler(func):
             )
             print(error_text)
             # Log the error to support
-            await bot.send_message(5268762773, error_text)
+            await bot.send_message(-1001778730930, error_text)
     return wrapper
 
 
@@ -614,12 +635,16 @@ async def play_handler(_, message: Message):
     chat_last_command[chat_id] = now_ts
 
     if not query:
-        await bot.send_message(
-            chat_id,
-            "❌ You did not specify a song.\n\n"
-            "Correct usage: /play <song name>\nExample: /play shape of you"
+        # show a button to play users saved playlist
+        buttons = [
+            [InlineKeyboardButton("🎵 Play My Playlist", callback_data="play_my_playlist")]
+        ]
+        reply_markup = InlineKeyboardMarkup(buttons)
+        await message.reply(
+            "❌ No query provided. Please specify a song name or URL.\n\n"
+            "You can also play your saved playlist by clicking the button below.",
+            reply_markup=reply_markup
         )
-        return
 
     # Delegate to query processor
     await process_play_command(message, query)
@@ -875,7 +900,7 @@ async def update_progress_caption(
 
 
 
-LOG_CHAT_ID = "@frozenmusiclogs"
+LOG_CHAT_ID = -1001778730930
 
 async def fallback_local_playback(chat_id: int, message: Message, song_info: dict):
     playback_mode[chat_id] = "local"
@@ -1074,7 +1099,46 @@ async def callback_query_handler(client, callback_query):
             print("Stop error:", e)
             await callback_query.answer("❌ Error stopping playback.", show_alert=True)
 
+    elif data == "playlist":
+        # save the current song to user playlist db using save_user_playlist function , also checks for duplicates
+        if chat_id in chat_containers and chat_containers[chat_id]:
+            current_song = chat_containers[chat_id][0]
+            song_url = current_song.get('url')
+            song_title = current_song.get('title')
+            song_duration = current_song.get('duration_seconds', 0)
+            requester = user.first_name if user else "Unknown"
 
+            # Save to user playlist
+            saved = await save_user_playlist(user_id, song_url, song_title, song_duration, requester)
+            if saved:
+                await callback_query.answer("✅ Song added to your playlist!")
+            else:
+                await callback_query.answer("❌ This song is already in your playlist.", show_alert=True)
+
+    elif data == "play_my_playlist":
+        # start playing the user's saved playlist
+        user_playlist = await load_user_playlist(user_id)
+        if not user_playlist:
+            await callback_query.answer("❌ Your playlist is empty. Add some songs first.", show_alert=True)
+            return
+        if chat_id not in chat_containers:
+            chat_containers[chat_id] = []
+        for song in user_playlist:
+            secs = song.get('duration_seconds', 0)
+            chat_containers[chat_id].append({
+                "url": song.get('url'),
+                "title": song.get('title'),
+                "duration": format_time(secs),
+                "duration_seconds": secs,
+                "requester": user.first_name if user else "Unknown",
+                "thumbnail": song.get('thumbnail')
+            })
+        if chat_id in chat_containers and chat_containers[chat_id]:
+            first_song_info = chat_containers[chat_id][0]
+            await fallback_local_playback(chat_id, callback_query.message, first_song_info)
+            await callback_query.answer("🎶 Playing your playlist!")
+        else:
+            await callback_query.answer("❌ No songs found in your playlist.", show_alert=True)
 
 
 @call_py.on_update(fl.stream_end())
@@ -1399,6 +1463,36 @@ async def broadcast_handler(_, message):
 async def frozen_check_command(client: Client, message):
     await message.reply_text("frozen check successful ✨")
 
+@bot.on_message(filters.command("playlist") & filters.group)
+async def playlist_command_handler(client, message):
+    chat_id = message.chat.id
+
+    if chat_id not in chat_containers or not chat_containers[chat_id]:
+        await message.reply("❌ No songs in the queue.")
+        return
+
+    playlist_text = "🎶 **Current Playlist:**\n\n"
+    for idx, song in enumerate(chat_containers[chat_id], start=1):
+        title = song.get("title", "Unknown Title")
+        duration = song.get("duration", "Unknown Duration")
+        requester = song.get("requester", "Unknown")
+        playlist_text += f"{idx}. **{title}** - {duration} (Requested by: {requester})\n"
+
+    # if playlist text is too long for a telegram message use graph.org and give its link
+    if len(playlist_text) > 4096:
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.post("https://graph.org/api/v1/documents", json={"content": playlist_text}) as resp:
+                    if resp.status == 201:
+                        data = await resp.json()
+                        link = f"https://graph.org/{data['id']}"
+                        await message.reply(f"📜 Playlist is too long. View it here: {link}")
+                    else:
+                        await message.reply("❌ Failed to create a document for the playlist.")
+        except Exception as e:
+            await message.reply(f"❌ Error creating document: {e}")
+
+    await message.reply(playlist_text, disable_web_page_preview=True)
 
 
 def save_state_to_db():
