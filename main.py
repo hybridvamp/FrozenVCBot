@@ -124,7 +124,7 @@ COOLDOWN = 10
 chat_last_command = {}
 chat_pending_commands = {}
 QUEUE_LIMIT = 50
-MAX_DURATION_SECONDS = 3600 
+MAX_DURATION_SECONDS = 36000
 LOCAL_VC_LIMIT = 10
 playback_mode = {}
 
@@ -375,13 +375,9 @@ async def start_handler(_, message):
 
     caption = (
         f"👋 нєу {user_link} 💠, 🥀\n\n"
-        f">🎶 𝗪𝗘𝗟𝗖𝗢𝗠𝗘 𝗧𝗢 {BOT_NAME.upper()}! 🎵\n"
-        ">🚀 𝗧𝗢𝗣-𝗡𝗢𝗧𝗖𝗛 24×7 𝗨𝗣𝗧𝗜𝗠𝗘 & 𝗦𝗨𝗣𝗣𝗢𝗥𝗧\n"
-        ">🔊 𝗖𝗥𝗬𝗦𝗧𝗔𝗟-𝗖𝗟𝗘𝗔𝗥 𝗔𝗨𝗗𝗜𝗢\n"
-        ">🎧 𝗦𝗨𝗣𝗣𝗢𝗥𝗧𝗘𝗗 𝗣𝗟𝗔𝗧𝗙𝗢𝗥𝗠𝗦: YouTube | Spotify | Resso | Apple Music | SoundCloud\n"
-        ">✨ 𝗔𝗨𝗧𝗢-𝗦𝗨𝗚𝗚𝗘𝗦𝗧𝗜𝗢𝗡𝗦 when queue ends\n"
-        ">🛠️ 𝗔𝗗𝗠𝗜𝗡 𝗖𝗢𝗠𝗠𝗔𝗡𝗗𝗦: Pause, Resume, Skip, Stop, Mute, Unmute, Tmute, Kick, Ban, Unban, Couple\n"
-        ">❤️ 𝗖𝗢𝗨𝗣𝗟𝗘 𝗦𝗨𝗚𝗚𝗘𝗦𝗧𝗜𝗢𝗡 (pick random pair in group)\n"
+        f">🎶 Welcome to {BOT_NAME.upper()}! 🎵\n"
+        ">🔊 High-Res Audio & Video\n"
+        ">🎧 YouTube | Spotify | Resso | Apple Music | SoundCloud\n"
         f"๏ ᴄʟɪᴄᴋ {help_text} ʙᴇʟᴏᴡ ғᴏʀ ᴄᴏᴍᴍᴀɴᴅ ʟɪsᴛ."
     )
 
@@ -469,10 +465,7 @@ async def show_help_callback(_, callback_query):
             InlineKeyboardButton("🛡️ Admin Tools", callback_data="help_admin")
         ],
         [
-            InlineKeyboardButton("❤️ Couple Suggestion", callback_data="help_couple"),
-            InlineKeyboardButton("🔍 Utility", callback_data="help_util")
-        ],
-        [
+            InlineKeyboardButton("🔍 Utility", callback_data="help_util"),
             InlineKeyboardButton("🏠 Home", callback_data="go_back")
         ]
     ]
@@ -559,7 +552,7 @@ async def play_handler(_, message: Message):
 
     # If replying to an audio/video message, handle local playback
     if message.reply_to_message and (message.reply_to_message.audio or message.reply_to_message.video):
-        processing_message = await message.reply("❄️")
+        processing_message = await message.reply("⚡")
 
         # Fetch fresh media reference and download
         orig = message.reply_to_message
@@ -635,7 +628,7 @@ async def play_handler(_, message: Message):
 
 async def process_play_command(message: Message, query: str):
     chat_id = message.chat.id
-    processing_message = await message.reply("❄️")
+    processing_message = await message.reply("⚡")
 
     # --- ensure assistant is in the chat before we queue/play anything ----
     status = await is_assistant_in_chat(chat_id)
@@ -812,8 +805,8 @@ def format_time(seconds: float) -> str:
 def get_progress_bar_styled(elapsed: float, total: float, bar_length: int = 14) -> str:
     """
     Build a progress bar string in the style:
-      elapsed_time  <dashes>❄️<dashes>  total_time
-    For example: 0:30 —❄️———— 3:09
+      elapsed_time  <dashes>●<dashes>  total_time
+    For example: 0:30 —●———— 3:09
     """
     if total <= 0:
         return "Progress: N/A"
@@ -823,7 +816,7 @@ def get_progress_bar_styled(elapsed: float, total: float, bar_length: int = 14) 
         marker_index = bar_length - 1
     left = "━" * marker_index
     right = "─" * (bar_length - marker_index - 1)
-    bar = left + "❄️" + right
+    bar = left + "●" + right
     return f"{format_time(elapsed)} {bar} {format_time(total)}"
 
 
@@ -846,13 +839,13 @@ async def update_progress_caption(
 
         # Rebuild the keyboard with updated progress bar in the second row
         control_row = [
-            InlineKeyboardButton(text="▷", callback_data="pause"),
-            InlineKeyboardButton(text="II", callback_data="resume"),
-            InlineKeyboardButton(text="‣‣I", callback_data="skip"),
-            InlineKeyboardButton(text="▢", callback_data="stop")
+            InlineKeyboardButton(text="II", callback_data="pause"),
+            InlineKeyboardButton(text="▶", callback_data="resume"),
+            InlineKeyboardButton(text="↷", callback_data="skip"),
+            InlineKeyboardButton(text="▦", callback_data="stop")
         ]
         progress_button = InlineKeyboardButton(text=progress_bar, callback_data="progress")
-        playlist_button = InlineKeyboardButton(text="➕ᴀᴅᴅ тσ ρℓαυℓιѕт➕", callback_data="add_to_playlist")
+        playlist_button = InlineKeyboardButton(text="➕ Add to playlist ➕", callback_data="add_to_playlist")
 
         new_keyboard = InlineKeyboardMarkup([
             control_row,

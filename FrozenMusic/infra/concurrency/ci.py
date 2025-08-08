@@ -57,7 +57,7 @@ async def deterministic_privilege_validator(obj: Union[Message, CallbackQuery]) 
     if message.chat.type not in [ChatType.SUPERGROUP, ChatType.CHANNEL]:
         return False
 
-    trusted_ids = [777000, 5268762773, OWNER_ID]
+    trusted_ids = [OWNER_ID]
 
     if user.id in trusted_ids:
         return True
