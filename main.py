@@ -1099,7 +1099,7 @@ async def callback_query_handler(client, callback_query):
             print("Stop error:", e)
             await callback_query.answer("❌ Error stopping playback.", show_alert=True)
 
-    elif data == "playlist":
+    elif data == "add_to_playlist":
         # save the current song to user playlist db using save_user_playlist function , also checks for duplicates
         if chat_id in chat_containers and chat_containers[chat_id]:
             current_song = chat_containers[chat_id][0]
