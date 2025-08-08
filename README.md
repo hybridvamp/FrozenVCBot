@@ -119,11 +119,11 @@
 </h3>
 
 <p align="center">
-<a href="https://t.me/Frozensupport1"><img src="https://img.shields.io/badge/-Support%20Group-blue.svg?style=for-the-badge&logo=Telegram"></a>
+<a href="https://t.me/esports9"><img src="https://img.shields.io/badge/-Support%20Group-blue.svg?style=for-the-badge&logo=Telegram"></a>
 </p>
 
 <p align="center">
-<a href="https://t.me/Frozensupport1"><img src="https://img.shields.io/badge/-Support%20Channel-blue.svg?style=for-the-badge&logo=Telegram"></a>
+<a href="https://t.me/esports9"><img src="https://img.shields.io/badge/-Support%20Channel-blue.svg?style=for-the-badge&logo=Telegram"></a>
 </p>
 
 - <b> _sᴩᴇᴄɪᴀʟ ᴛʜᴀɴᴋs ᴛᴏ [KustBots](https://github.com/kustbots) ғᴏʀ [ᴍᴜsɪᴄ ʙᴏᴛ](https://github.com/kustbots/frozenvcmusicbot)_</b>
