@@ -1108,12 +1108,18 @@ async def callback_query_handler(client, callback_query):
             song_duration = current_song.get('duration_seconds', 0)
             requester = user.first_name if user else "Unknown"
 
-            # Save to user playlist
-            saved = await save_user_playlist(user_id, song_url, song_title, song_duration, requester)
-            if saved:
+            # make a playlist tp save matching save_user_playlist(usewr_id, playlist)
+            user_playlist = {
+                "url": song_url,
+                "title": song_title,
+                "duration_seconds": song_duration,
+                "requester": requester,
+                "thumbnail": current_song.get('thumbnail')
+            }
+            success = await save_user_playlist(user_id, user_playlist)
+            if success:
                 await callback_query.answer("✅ Song added to your playlist!")
-            else:
-                await callback_query.answer("❌ This song is already in your playlist.", show_alert=True)
+                await client.send_message(chat_id, f"✅ {user.first_name} added **{song_title}** to their playlist.")
 
     elif data == "play_my_playlist":
         # start playing the user's saved playlist
