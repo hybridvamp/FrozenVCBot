@@ -1,28 +1,63 @@
-Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
+GNU GENERAL PUBLIC LICENSE
+Version 3, 29 June 2007
 
-You are free to:
+Kust Music Bot — Free Telegram VC Music Streaming Bot
 
-✅ Share — copy and redistribute the material in any medium or format.  
-✅ Adapt — remix, transform, and build upon the material.
+Copyright (C) 2026 KustBots (https://github.com/kustbots)
 
-Under the following terms:
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-🔹 Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. 
-You must give credit in a reasonable manner, but not in any way that suggests the licensor endorses you or your use.  
-Required credit: "@xyz09723 (Prashant Sahlot), creator of Frozen Music Lite."
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-🔹 NonCommercial — You may not use the material for commercial purposes. 
-This includes but is not limited to selling, offering paid versions, offering "premium support" for a fee, or integrating into a paid service.
-
-🔹 No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
-
-Notices:
-
-⚠️ You do not have to comply with the license for elements of the material in the public domain or where your use is permitted by an applicable exception or limitation.
-
-⚠️ No warranties are given. The license may not give you all of the permissions necessary for your intended use. 
-For example, other rights such as publicity, privacy, or moral rights may limit how you use the material.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ---
 
-Official license text: https://creativecommons.org/licenses/by-nc/4.0/legalcode
+## ADDITIONAL REQUIREMENTS FOR USE
+
+By using this code, you agree to:
+
+✅ **Star the repository** — Show your support on GitHub
+   → https://github.com/kustbots/kustmusic
+
+✅ **Fork the repository** — Create your own copy for deployment
+   → Never deploy directly from the original repo (Render/Koyeb ban)
+
+✅ **Give credit** — In your bot's /start message or about section:
+   → Mention "Powered by Kust Music Bot" or link back to the original repo
+   → Credit helps the project grow and is a simple way to show appreciation
+
+✅ **Keep the license** — Include this LICENSE file in any public forks
+   → Maintain attribution to the original creators
+
+---
+
+## WHAT YOU CAN DO
+
+✅ Use the code for personal projects
+✅ Modify and customize the code
+✅ Deploy on Render, Koyeb, Railway, Heroku, VPS, or cloud platforms
+✅ Create your own version and improve it
+✅ Share improvements via pull requests
+✅ Use in open-source projects (with proper credit)
+
+## WHAT YOU CANNOT DO
+
+❌ Remove or hide the original credits/attribution
+❌ Claim the code as entirely your own creation
+❌ Use without forking (direct deploy bans the original repo on platforms)
+❌ Close-source derivative projects without proper GPL compliance
+❌ Remove this license from public distributions
+
+---
+
+For full GPL 3.0 legal text, see: https://www.gnu.org/licenses/gpl-3.0.html
+
+**Questions?** Open an issue on GitHub or contact the maintainers.

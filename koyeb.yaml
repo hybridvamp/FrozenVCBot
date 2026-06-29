@@ -1,7 +1,7 @@
 services:
-  - name: frozen-music-bot
+  - name: kust-music-bot
     git:
-      repo: "https://github.com/prashantsahlot/frozenvcmusicbot"
+      repo: "https://github.com/kustbots/kustmusic"
       branch: main
     dockerfile_path: Dockerfile
     routes:
@@ -11,15 +11,11 @@ services:
       - 8080
     instance_type: micro
     env:
-      API_HASH: ""
       API_ID: ""
-      ASSISTANT_SESSION: ""
+      API_HASH: ""
       BOT_TOKEN: ""
+      ASSISTANT_SESSION: ""
       OWNER_ID: ""
-      MongoDB_url: ""
-      UPDATES_CHANNEL: ""
-      SUPPORT_GROUP: ""
-      START_ANIMATION: ""
-
-
-
+      SEARCH_API_URL: ""
+      DOWNLOAD_API_BASE: ""
+      YOUTUBE_COOKIES: ""
