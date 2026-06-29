@@ -118,7 +118,9 @@ Add these in Render's **Environment** tab:
 | `API_ID` | From [my.telegram.org](https://my.telegram.org) | ✅ |
 | `API_HASH` | From [my.telegram.org](https://my.telegram.org) | ✅ |
 | `OWNER_ID` | Your Telegram user ID | ✅ |
-| `SEARCH_API_URL` | Leave blank for default | ❌ |
+| `SEARCH_API_URL` | Leave blank for default search API | ❌ |
+| `DOWNLOAD_API_BASE` | Your download API base URL — leave blank to use yt-dlp | ❌ |
+| `COOKIES_FILE` | Path to cookies.txt — leave blank to disable | ❌ |
 
 **Step 4 — Deploy**
 - Click **"Create Web Service"** — build takes ~3 minutes

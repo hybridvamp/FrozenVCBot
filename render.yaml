@@ -18,3 +18,7 @@ services:
         sync: false
       - key: SEARCH_API_URL
         sync: false
+      - key: DOWNLOAD_API_BASE
+        sync: false
+      - key: COOKIES_FILE
+        sync: false
