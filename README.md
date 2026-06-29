@@ -15,32 +15,14 @@
   🚀 Cloud Ready
 ```
 
-## About
-
-**Kust Music Bot** is a free, open-source **Telegram voice chat music streaming bot** built for anyone to deploy. Stream high-quality audio directly into Telegram groups with zero database dependencies. 
-
-✨ **Why Kust Music?**
-- **Easy Deploy** — One-click setup on Render, Koyeb, Railway, Heroku, or any VPS
-- **No Ads** — Fully open-source under GPL 3.0 — customize and host your own
-- **Unlimited Clones** — Run multiple bot instances from a single deployment
-- **Smart Fallback** — Optional download API with yt-dlp fallback + Deno JS solver
-- **Cookie Support** — Paste YouTube cookies as env var to bypass rate limits
-- **Modular Code** — Clean 15-file structure, easy to understand and modify
-
-**📝 License:** GNU General Public License v3.0 — See [LICENSE](LICENSE) for details.
-
-**⭐ Please star the repo** if you find it useful — it helps the project grow!
-
-
-
 <p align="center">
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=20&pause=1000&color=00D4FF&center=true&vCenter=true&width=700&lines=🎧+Premium+Telegram+VC+Music+Bot;⚡+Powered+by+yt-dlp+%2B+Kurigram;🤖+Multi-Bot+Clone+System;🚀+Deploy+on+Render+%7C+Koyeb+%7C+Railway+%7C+VPS"/>
+<img src="https://readme-typing-svg.herokuapp.com?font=Courier+New&weight=700&size=18&duration=4000&pause=500&color=00D4FF&center=true&vCenter=true&width=600&lines=🎧+Premium+Telegram+VC+Music+Bot;⚡+Powered+by+yt-dlp+%26+Kurigram;🤖+Multi-Bot+Clone+System;🚀+Deploy+on+Render+Koyeb+Railway+VPS" alt="typing animation" />
 </p>
 
 <p align="center">
 <a href="https://github.com/kustbots/kustmusic/stargazers"><img src="https://img.shields.io/github/stars/kustbots/kustmusic?color=black&logo=github&logoColor=white&style=for-the-badge" alt="Stars"/></a>
 <a href="https://github.com/kustbots/kustmusic/network/members"><img src="https://img.shields.io/github/forks/kustbots/kustmusic?color=black&logo=github&logoColor=white&style=for-the-badge"/></a>
-<a href="https://github.com/kustbots/kustmusic/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-Kust%20Protect-blueviolet?style=for-the-badge" alt="License"/></a>
+<a href="https://github.com/kustbots/kustmusic/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-GPL%203.0-blue?style=for-the-badge" alt="License"/></a>
 <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Written%20in-Python-orange?style=for-the-badge&logo=python" alt="Python"/></a>
 <a href="https://github.com/kustbots/kustmusic/commits/main"><img src="https://img.shields.io/github/last-commit/kustbots/kustmusic?color=blue&logo=github&logoColor=green&style=for-the-badge"/></a>
 </p>
