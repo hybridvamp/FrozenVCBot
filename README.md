@@ -1,6 +1,6 @@
 <div align="center">
 
-```
+<pre>
  ██╗  ██╗██╗   ██╗███████╗████████╗
  ██║ ██╔╝██║   ██║██╔════╝╚══██╔══╝
  █████╔╝ ██║   ██║███████╗   ██║
@@ -13,7 +13,7 @@
   ⚡ yt-dlp Powered
   🤖 Clone System
   🚀 Cloud Ready
-```
+</pre>
 
 <p align="center">
 <img src="https://readme-typing-svg.herokuapp.com?font=Courier+New&weight=700&size=18&duration=4000&pause=500&color=00D4FF&center=true&vCenter=true&width=600&lines=🎧+Premium+Telegram+VC+Music+Bot;⚡+Powered+by+yt-dlp+%26+Kurigram;🤖+Multi-Bot+Clone+System;🚀+Deploy+on+Render+Koyeb+Railway+VPS" alt="typing animation" />
