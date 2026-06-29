@@ -4,7 +4,7 @@ import os
 import time
 
 from pyrogram.enums import ParseMode
-from pyrogram.errors import RPCError, UserAlreadyParticipant
+from pyrogram.errors import UserAlreadyParticipant
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pytgcalls import filters as fl
 from pytgcalls.types import StreamEnded
@@ -16,21 +16,37 @@ from core.helpers import get_progress_bar, one_line_title, parse_duration_str
 
 logger = logging.getLogger(__name__)
 
+_ASSISTANT_JOIN_ERRORS = (
+    "peeridinvalid", "peer_id_invalid", "channelprivate",
+    "not in chat", "usernotparticipant", "groupcallinvalid",
+    "invalid peer", "chatadminrequired",
+)
 
-async def _check_assistant_in_chat(client, chat_id, who):
+
+async def _try_join_assistant(client, chat_id, status_msg):
     try:
-        member = await client.get_chat_member(chat_id=chat_id, user_id=who)
-        status = getattr(member, "status", None)
-        if hasattr(status, "value"):
-            return status.value
-        if isinstance(status, str):
-            return status
-        return str(status) if status is not None else False
+        if status_msg:
+            await status_msg.edit_text("🔄 <b>Joining assistant...</b>", parse_mode=ParseMode.HTML)
+        try:
+            invite_link = await client.export_chat_invite_link(chat_id)
+        except Exception:
+            link_obj = await client.create_chat_invite_link(chat_id)
+            invite_link = link_obj.invite_link
+        try:
+            await user_app.join_chat(invite_link)
+        except UserAlreadyParticipant:
+            pass
+        except Exception as join_err:
+            err_s = str(join_err).lower()
+            if "expired" in err_s or "invalid" in err_s or "hash" in err_s:
+                new_link = await client.create_chat_invite_link(chat_id)
+                await user_app.join_chat(new_link.invite_link)
+            else:
+                raise join_err
+        await asyncio.sleep(2)
+        return True
     except Exception as e:
-        if "UserNotParticipant" in type(e).__name__:
-            return False
-        if isinstance(e, RPCError) and "USER_BANNED" in str(e).upper():
-            return "banned"
+        logger.warning(f"Assistant join failed for {chat_id}: {e}")
         return False
 
 
@@ -71,69 +87,14 @@ async def update_progress_caption(chat_id, message, start_time, total_duration, 
 
 async def play_music_core(client, chat_id, song_info, status_msg=None, retry_attempt=False):
     try:
-        if chat_id not in state.assistant_cache or retry_attempt:
-            is_participant = await _check_assistant_in_chat(client, chat_id, state.ASSISTANT_ID)
-            if not is_participant:
-                if status_msg:
-                    await status_msg.edit_text("🔍 **Assistant not in chat.**\nGenerating invite link...")
-                try:
-                    try:
-                        invite_link = await client.export_chat_invite_link(chat_id)
-                    except Exception:
-                        link_obj = await client.create_chat_invite_link(chat_id)
-                        invite_link = link_obj.invite_link
-
-                    try:
-                        if "+" in invite_link:
-                            await user_app.join_chat(invite_link)
-                        else:
-                            await user_app.join_chat(chat_id)
-                    except Exception as join_err:
-                        err_s = str(join_err).lower()
-                        if "invite_hash_expired" in err_s or "expired" in err_s or "invalid" in err_s:
-                            if status_msg:
-                                await status_msg.edit_text("🔄 **Link expired. Generating a fresh one...**")
-                            new_link_obj = await client.create_chat_invite_link(chat_id)
-                            await user_app.join_chat(new_link_obj.invite_link)
-                        else:
-                            raise join_err
-
-                    if status_msg:
-                        await status_msg.edit_text("✅ **Assistant Joined.**")
-                    await asyncio.sleep(2)
-
-                except UserAlreadyParticipant:
-                    if status_msg:
-                        await status_msg.edit_text("✅ **Assistant Already in Chat.**")
-                    await asyncio.sleep(1)
-
-                except Exception as e:
-                    if status_msg:
-                        ast_mention = f"@{state.ASSISTANT_USERNAME}" if state.ASSISTANT_USERNAME else "the assistant"
-                        verify_btn = InlineKeyboardMarkup([[
-                            InlineKeyboardButton("✅ I have added the assistant", callback_data="verify_assistant")
-                        ]])
-                        await status_msg.edit_text(
-                            f"❌ **Assistant Join Failed:**\n`{e}`\n\n"
-                            f"Please add {ast_mention} manually and click below.",
-                            reply_markup=verify_btn,
-                        )
-                    return
-
-            state.assistant_cache[chat_id] = True
-            try:
-                await user_app.get_chat(chat_id)
-            except Exception:
-                pass
-
         file_path = song_info.get("file_path")
         if not file_path or not os.path.exists(file_path):
             if status_msg:
-                await status_msg.edit_text("⬇️ **Downloading Audio...**")
+                await status_msg.edit_text("⬇️ <b>Downloading audio...</b>", parse_mode=ParseMode.HTML)
             file_path = await download_song(song_info["url"])
             if not file_path or not os.path.exists(file_path):
                 if status_msg:
-                    await status_msg.edit_text("❌ **Download Failed.**")
+                    await status_msg.edit_text("❌ <b>Download failed.</b>", parse_mode=ParseMode.HTML)
                 if chat_id in state.chat_queues and state.chat_queues[chat_id]:
                     state.chat_queues[chat_id].pop(0)
                     if state.chat_queues[chat_id]:
@@ -144,32 +105,31 @@ async def play_music_core(client, chat_id, song_info, status_msg=None, retry_att
             song_info["file_path"] = file_path
 
         if status_msg:
-            await status_msg.edit_text("🎧 **Starting Playback...**")
+            await status_msg.edit_text("🎧 <b>Starting playback...</b>", parse_mode=ParseMode.HTML)
 
         try:
             await call_py.play(chat_id, file_path)
         except Exception as e:
             err_s = str(e).lower()
-            if any(k in err_s for k in ["peeridinvalid", "channelprivate", "invalid", "not in chat"]):
-                if status_msg:
-                    ast_mention = f"@{state.ASSISTANT_USERNAME}" if state.ASSISTANT_USERNAME else "the assistant"
-                    verify_btn = InlineKeyboardMarkup([[
-                        InlineKeyboardButton("✅ I have added the assistant", callback_data="verify_assistant")
-                    ]])
-                    await status_msg.edit_text(
-                        f"❌ **VC unavailable or Assistant missing:**\n`{e}`\n\n"
-                        f"Please start the VC, add {ast_mention} manually, and click below.",
-                        reply_markup=verify_btn,
-                    )
-                state.assistant_cache.pop(chat_id, None)
-                return
-            if not retry_attempt:
-                state.assistant_cache.pop(chat_id, None)
-                if status_msg:
-                    await status_msg.edit_text("🔄 **Connection Error. Refreshing...**")
-                await asyncio.sleep(1.5)
-                return await play_music_core(client, chat_id, song_info, status_msg, retry_attempt=True)
-            raise e
+            is_chat_error = any(k in err_s for k in _ASSISTANT_JOIN_ERRORS)
+
+            if is_chat_error and not retry_attempt:
+                joined = await _try_join_assistant(client, chat_id, status_msg)
+                if joined:
+                    return await play_music_core(client, chat_id, song_info, status_msg, retry_attempt=True)
+
+            ast_mention = f"@{state.ASSISTANT_USERNAME}" if state.ASSISTANT_USERNAME else "the assistant"
+            verify_btn = InlineKeyboardMarkup([[
+                InlineKeyboardButton("✅ I added the assistant — retry", callback_data="verify_assistant")
+            ]])
+            if status_msg:
+                await status_msg.edit_text(
+                    f"❌ <b>Playback failed:</b>\n<code>{e}</code>\n\n"
+                    f"Add {ast_mention} to this group and the voice chat, then click below.",
+                    parse_mode=ParseMode.HTML,
+                    reply_markup=verify_btn,
+                )
+            return
 
         if chat_id in state.progress_tasks:
             state.progress_tasks[chat_id].cancel()
@@ -230,7 +190,7 @@ async def play_music_core(client, chat_id, song_info, status_msg=None, retry_att
         logger.error(f"Playback error in chat {chat_id}: {e}")
         if status_msg:
             try:
-                await status_msg.edit_text(f"❌ **Error:** {str(e)}")
+                await status_msg.edit_text(f"❌ <b>Error:</b> {e}", parse_mode=ParseMode.HTML)
             except Exception:
                 pass
         if chat_id in state.chat_queues and state.chat_queues[chat_id]:

@@ -36,13 +36,15 @@
 | Feature | Description |
 |---|---|
 | 🎧 **VC Playback** | Stream music directly into Telegram voice chats |
-| ⚡ **yt-dlp Engine** | Downloads audio via yt-dlp — no external API needed |
-| 🍪 **Cookie Support** | Add `cookies.txt` to bypass YouTube rate limits |
+| ⚡ **yt-dlp Engine** | Downloads audio via yt-dlp with Deno JS runtime support |
+| 🍪 **Cookie Support** | Paste YouTube cookies as env var — no file upload needed |
+| 🔌 **Download API** | Optional external download API with yt-dlp fallback |
 | 🤖 **Clone System** | Add unlimited bot instances with `/clone` |
 | 🛡️ **Admin Controls** | Kick, ban, mute, unmute group members |
 | 📊 **Live Progress Bar** | Real-time progress updates every 10 seconds |
 | 🔄 **Queue System** | Add multiple songs, auto-plays next in queue |
-| ☁️ **Cloud Ready** | Runs on Render, Koyeb, Railway, or your VPS |
+| 🐳 **Docker Ready** | Heroku deploys as container; other platforms as native Python |
+| ☁️ **Cloud Ready** | Runs on Render, Koyeb, Railway, Heroku, or your VPS |
 | 🌱 **Zero Database** | No MongoDB — pure in-memory state |
 | 🔥 **Kurigram Powered** | Built on Kurigram — latest Telegram API features |
 
@@ -126,6 +128,27 @@ Add these in Render's **Environment** tab:
 - Click **"Create Web Service"** — build takes ~3 minutes
 
 > 💡 **How to get ASSISTANT_SESSION:** Use [@StringFatherBot](https://t.me/StringFatherBot) to generate a Pyrogram string session from your Telegram account.
+
+---
+
+## 🐳 Deploy on Heroku (Container Mode)
+
+Heroku uses the included `Dockerfile` which installs FFmpeg + Deno automatically.
+
+**Step 1 — Set Heroku to container stack before deploying:**
+```bash
+heroku login
+heroku create your-app-name
+heroku stack:set container -a your-app-name
+git push heroku main
+```
+
+**Or use the one-click button above** — then run:
+```bash
+heroku stack:set container -a your-app-name
+```
+
+> 💡 The `heroku.yml` file in the repo tells Heroku to build from `Dockerfile`. All other platforms (Render, Railway, Koyeb) ignore `heroku.yml` and use their own config files — they deploy as normal Python without Docker.
 
 ---
 

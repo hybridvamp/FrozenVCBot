@@ -73,6 +73,12 @@ def _yt_download(youtube_url, output_template):
         "quiet": True,
         "no_warnings": True,
         "noplaylist": True,
+        "js_runtimes": "deno",
+        "extractor_args": {
+            "youtube": {
+                "player_client": ["web", "mweb", "android"],
+            }
+        },
     }
     if COOKIES_FILE and os.path.exists(COOKIES_FILE):
         ydl_opts["cookiefile"] = COOKIES_FILE
