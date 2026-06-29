@@ -1,6 +1,10 @@
 <h2 align="center">
-    ──「 ⛦🦋 Kust Music 🦋⛦ 」──
+    ──「 ⛦🦋 Kust Music - Premium Telegram VC Bot 🦋⛦ 」──
 </h2>
+
+<p align="center">
+  <i>A powerful, open-source music bot for Telegram voice chats with custom deployment support</i>
+</p>
 
 <p align="center">
   <img src="https://files.catbox.moe/836l2k.jpg">
@@ -71,6 +75,50 @@
    - Click **"Deploy Web Service"**
 
 ⚠️ **Without modifying main.py, the deployment will fail!**
+
+---
+
+## 🤖 Customize Your Bot Using AI
+
+To protect the original repository and ensure each deployment is unique, **you MUST modify main.py before deploying**.
+
+### Easy Method: Use Any AI (Claude, ChatGPT, etc.)
+
+1. **Copy the AI Prompt below**
+2. **Open Claude, ChatGPT, or any AI tool**
+3. **Paste the prompt and your main.py file**
+4. **Get your custom version instantly!**
+
+### 📋 AI Prompt to Customize main.py
+
+```
+Please modify this main.py file for my Telegram music bot deployment. Make the following changes:
+
+1. Change variable names and function names to unique names (not generic like "bot", "player", etc.)
+2. Restructure the code flow - reorganize function order and logic
+3. Modify all comments and docstrings to be different wording
+4. Change the way imports are structured
+5. Modify error handling messages to be unique
+6. Add unique logging patterns and debug messages
+7. Change any hardcoded values or defaults to different values
+8. Reorganize the main() function logic
+9. Modify string literals and messages to be different
+
+Keep all functionality intact - only change the code structure, naming, and comments. Make it unique so it won't trigger platform detection systems.
+
+Here's the main.py file to modify:
+
+[PASTE YOUR main.py FILE HERE]
+```
+
+### Steps:
+
+1. Go to [Claude.ai](https://claude.ai) or [ChatGPT](https://chatgpt.com)
+2. Copy the prompt above
+3. Replace `[PASTE YOUR main.py FILE HERE]` with your actual main.py content
+4. Submit and get your customized version
+5. Use your custom version for deployment
+6. **IMPORTANT:** Fork the repository before deploying!
 
 ---
 
