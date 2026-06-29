@@ -1,12 +1,14 @@
 {
   "build": {
     "env": {
-      "API_HASH": "",
       "API_ID": "",
-      "ASSISTANT_SESSION": "",
+      "API_HASH": "",
       "BOT_TOKEN": "",
+      "ASSISTANT_SESSION": "",
       "OWNER_ID": "",
-      "MongoDB_url": ""
+      "SEARCH_API_URL": "",
+      "DOWNLOAD_API_BASE": "",
+      "YOUTUBE_COOKIES": ""
     }
   },
   "deploy": {

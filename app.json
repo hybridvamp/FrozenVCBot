@@ -30,7 +30,11 @@
       "required": false
     },
     "DOWNLOAD_API_BASE": {
-      "description": "Download API base URL (leave blank to use default)",
+      "description": "Download API base URL (leave blank to use yt-dlp)",
+      "required": false
+    },
+    "YOUTUBE_COOKIES": {
+      "description": "Paste your YouTube cookies here (optional, for bypassing rate limits)",
       "required": false
     }
   },
