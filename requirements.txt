@@ -1,4 +1,4 @@
-git+https://github.com/prashantsahlot/FrozenGram.git
+kurigram
 py-tgcalls
 aiohttp
 tgcrypto

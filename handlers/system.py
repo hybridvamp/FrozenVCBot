@@ -7,7 +7,7 @@ from pyrogram.enums import ParseMode
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 import state
-from config import API_ID, API_HASH, CURRENT_DYNO, MAIN_OWNER, MAX_BOTS_PER_DYNO, SEARCH_API_URL
+from config import API_ID, API_HASH, MAIN_OWNER, SEARCH_API_URL
 from core.guards import check_abuse
 from core.helpers import get_readable_time, to_bold_unicode
 
@@ -33,66 +33,66 @@ async def ping_handler(client, message):
     disk = psutil.disk_usage("/").percent
 
     msg = (
-        f"🏓 **Pong!**\n\n"
-        f"📱 **Telegram Latency:** `{tg_ping}ms`\n"
-        f"🔍 **Search API:** `{api_ping}`\n\n"
-        f"💻 **System Stats:**\n"
-        f"├ **Uptime:** `{uptime}`\n"
-        f"├ **CPU:** `{cpu}%`\n"
-        f"├ **RAM:** `{mem}%`\n"
-        f"└ **Disk:** `{disk}%`"
+        f"🏓 <b>Pong!</b>\n\n"
+        f"📱 <b>Telegram:</b> <code>{tg_ping}ms</code>\n"
+        f"🔍 <b>Search API:</b> <code>{api_ping}</code>\n\n"
+        f"<blockquote>💻 <b>System</b>\n"
+        f"├ <b>Uptime:</b> <code>{uptime}</code>\n"
+        f"├ <b>CPU:</b> <code>{cpu}%</code>\n"
+        f"├ <b>RAM:</b> <code>{mem}%</code>\n"
+        f"└ <b>Disk:</b> <code>{disk}%</code></blockquote>"
     )
-    await response.edit_text(msg, parse_mode=ParseMode.MARKDOWN)
+    await response.edit_text(msg, parse_mode=ParseMode.HTML)
 
 
 async def start_handler(client, message):
     if await check_abuse(message.from_user.id):
         return
 
-    user_link = f"[{message.from_user.first_name}](tg://user?id={message.from_user.id})"
+    user_link = f"<a href='tg://user?id={message.from_user.id}'>{message.from_user.first_name}</a>"
     bot_name_bold = to_bold_unicode(client.me.first_name.upper())
     owner_id = getattr(client, "clone_owner", MAIN_OWNER)
 
     caption = (
-        f"👋 **Hello** {user_link} **!**\n\n"
-        f"**Welcome to {bot_name_bold}**\n"
-        f"━━━━━━━━━━━━━━━━━━━━━━\n"
-        f"✨ **Premium Music Experience**\n"
-        f"🎧 **Audio:** High Stability Playback\n"
-        f"🛡️ **Security:** Built-in Group Protection\n"
-        f"🤖 **Clone System:** Host your own instance\n"
-        f"━━━━━━━━━━━━━━━━━━━━━━\n"
-        f"💡 _Click the buttons below to explore!_"
+        f"👋 <b>Hey</b> {user_link}<b>!</b>\n\n"
+        f"<blockquote>🎵 <b>{bot_name_bold}</b>\n"
+        f"━━━━━━━━━━━━━━━━━━━\n"
+        f"🎧 High quality VC music streaming\n"
+        f"⚡ yt-dlp powered — no external API\n"
+        f"🤖 Clone system — host your own\n"
+        f"🛡️ Built-in group protection\n"
+        f"🌱 Zero database needed</blockquote>\n\n"
+        f"💡 <i>Use /play &lt;song&gt; in your group to start!</i>"
     )
 
     buttons = [
-        [InlineKeyboardButton("➕ Add Me to Your Group", url=f"https://t.me/{client.me.username}?startgroup=true")],
+        [InlineKeyboardButton("➕ Add to Group", url=f"https://t.me/{client.me.username}?startgroup=true")],
         [
             InlineKeyboardButton("📜 Commands", callback_data="show_help"),
-            InlineKeyboardButton("📢 Updates", url="https://t.me/kustbots"),
+            InlineKeyboardButton("📢 Channel", url="https://t.me/kustbots"),
         ],
-        [InlineKeyboardButton("👤 Owner", url=f"tg://user?id={owner_id}")],
+        [
+            InlineKeyboardButton("💬 Support", url="https://t.me/kustbots"),
+            InlineKeyboardButton("👤 Owner", url=f"tg://user?id={owner_id}"),
+        ],
     ]
-    await message.reply_text(caption, parse_mode=ParseMode.MARKDOWN, reply_markup=InlineKeyboardMarkup(buttons))
+    await message.reply_text(caption, parse_mode=ParseMode.HTML, reply_markup=InlineKeyboardMarkup(buttons))
 
 
 async def clone_command(client, message):
     user_id = message.from_user.id
     if len(message.command) < 2:
         return await message.reply_text(
-            "❌ **Usage:** `/clone <BOT_TOKEN>`\n\n"
-            "📖 **How to get a bot token:**\n"
-            "1. Open [@BotFather](https://t.me/BotFather)\n"
-            "2. Send `/newbot` and follow the steps\n"
-            "3. Copy the token and send it here"
+            "❌ <b>Usage:</b> <code>/clone BOT_TOKEN</code>\n\n"
+            "<blockquote>📖 <b>How to get a bot token:</b>\n"
+            "1. Open @BotFather\n"
+            "2. Send /newbot and follow steps\n"
+            "3. Copy the token and paste it here</blockquote>",
+            parse_mode=ParseMode.HTML,
         )
 
     token = message.command[1]
-    clones_on_dyno = [c for c in state.active_clients.values() if not getattr(c, "is_main", False)]
-    if len(clones_on_dyno) >= MAX_BOTS_PER_DYNO:
-        return await message.reply_text(f"❌ **Dyno limit of {MAX_BOTS_PER_DYNO} bots reached.**")
-
-    status = await message.reply_text("⏳ **Initializing Clone...**")
+    status = await message.reply_text("⏳ <b>Initializing clone...</b>", parse_mode=ParseMode.HTML)
     try:
         new_client = PyroClient(
             f"clone_{token.split(':')[0]}", api_id=API_ID, api_hash=API_HASH, bot_token=token
@@ -106,29 +106,31 @@ async def clone_command(client, message):
         register_handlers(new_client)
         state.active_clients[me.id] = new_client
 
+        clone_count = len([c for c in state.active_clients.values() if not getattr(c, "is_main", False)])
+
         await status.edit_text(
-            f"✅ **Bot Cloned Successfully!**\n\n"
-            f"🤖 **Bot:** @{me.username}\n"
-            f"👑 **Owner:** `{user_id}`\n"
-            f"🖥 **Dyno:** `{CURRENT_DYNO}`\n"
-            f"🔢 **Active Clones:** `{len(clones_on_dyno) + 1}/{MAX_BOTS_PER_DYNO}`"
+            f"✅ <b>Bot cloned successfully!</b>\n\n"
+            f"<blockquote>🤖 <b>Bot:</b> @{me.username}\n"
+            f"👑 <b>Owner:</b> <code>{user_id}</code>\n"
+            f"🔢 <b>Total clones:</b> <code>{clone_count}</code></blockquote>",
+            parse_mode=ParseMode.HTML,
         )
     except Exception as e:
-        await status.edit_text(f"❌ **Failed to clone:** `{e}`")
+        await status.edit_text(f"❌ <b>Clone failed:</b>\n<code>{e}</code>", parse_mode=ParseMode.HTML)
 
 
 async def active_bots_command(client, message):
     if message.from_user.id != MAIN_OWNER:
-        return await message.reply_text("❌ **Restricted to Main Owner.**")
+        return await message.reply_text("❌ <b>Restricted to main owner.</b>", parse_mode=ParseMode.HTML)
 
     if not state.active_clients:
-        return await message.reply_text("❌ **No active bots found.**")
+        return await message.reply_text("❌ <b>No active bots found.</b>", parse_mode=ParseMode.HTML)
 
-    text = f"🌐 **Active Bots** (Total: {len(state.active_clients)})\n\n"
+    text = f"🌐 <b>Active Bots</b> — Total: {len(state.active_clients)}\n\n"
     for _, c in state.active_clients.items():
         username = c.me.username if c.me else "Unknown"
         owner = getattr(c, "clone_owner", "Main")
-        tag = "✅ Main" if getattr(c, "is_main", False) else f"🔗 Clone | Owner: `{owner}`"
-        text += f"├ @{username} | {tag}\n"
+        tag = "✅ Main" if getattr(c, "is_main", False) else f"🔗 Clone · Owner: <code>{owner}</code>"
+        text += f"├ @{username} · {tag}\n"
 
-    await message.reply_text(text)
+    await message.reply_text(text, parse_mode=ParseMode.HTML)

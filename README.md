@@ -9,14 +9,14 @@
  ╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝
 
      🎵 MUSIC BOT 🎵
-  
+
   ⚡ yt-dlp Powered
   🤖 Clone System
   🚀 Cloud Ready
 ```
 
 <p align="center">
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=20&pause=1000&color=00D4FF&center=true&vCenter=true&width=700&lines=🎧+Premium+Telegram+VC+Music+Bot;⚡+Powered+by+yt-dlp+%2B+PyTgCalls;🤖+Multi-Bot+Clone+System;🚀+Deploy+on+Render+%7C+Koyeb+%7C+Railway+%7C+Heroku"/>
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=20&pause=1000&color=00D4FF&center=true&vCenter=true&width=700&lines=🎧+Premium+Telegram+VC+Music+Bot;⚡+Powered+by+yt-dlp+%2B+Kurigram;🤖+Multi-Bot+Clone+System;🚀+Deploy+on+Render+%7C+Koyeb+%7C+Railway+%7C+VPS"/>
 </p>
 
 <p align="center">
@@ -36,14 +36,44 @@
 | Feature | Description |
 |---|---|
 | 🎧 **VC Playback** | Stream music directly into Telegram voice chats |
-| ⚡ **yt-dlp Engine** | Downloads audio via yt-dlp — no external API dependency |
-| 🍪 **Cookie Support** | Add `cookies.txt` to bypass rate limits and age restrictions |
-| 🤖 **Clone System** | Deploy unlimited bots from a single instance with `/clone` |
-| 🛡️ **Admin Controls** | Kick, ban, mute, unmute, and manage group members |
-| 📊 **Live Progress Bar** | Real-time progress bar updates every 10 seconds |
-| 🔄 **Queue System** | Add multiple songs, auto-plays next when current ends |
-| ☁️ **Cloud Ready** | Runs on Render, Koyeb, Railway, Heroku, or your VPS |
-| 🌱 **Zero Database** | No MongoDB required — pure in-memory state |
+| ⚡ **yt-dlp Engine** | Downloads audio via yt-dlp — no external API needed |
+| 🍪 **Cookie Support** | Add `cookies.txt` to bypass YouTube rate limits |
+| 🤖 **Clone System** | Add unlimited bot instances with `/clone` |
+| 🛡️ **Admin Controls** | Kick, ban, mute, unmute group members |
+| 📊 **Live Progress Bar** | Real-time progress updates every 10 seconds |
+| 🔄 **Queue System** | Add multiple songs, auto-plays next in queue |
+| ☁️ **Cloud Ready** | Runs on Render, Koyeb, Railway, or your VPS |
+| 🌱 **Zero Database** | No MongoDB — pure in-memory state |
+| 🔥 **Kurigram Powered** | Built on Kurigram — latest Telegram API features |
+
+---
+
+## 📁 Project Structure
+
+```
+kustmusic/
+├── main.py              ← Entry point, starts all services
+├── config.py            ← All environment variables
+├── state.py             ← In-memory state (queues, clients)
+├── clients.py           ← Pyrogram + PyTgCalls client setup
+├── server.py            ← Dummy HTTP server for Render/Koyeb
+├── kust.env             ← Environment variable template
+├── render.yaml          ← Render deployment config
+├── Procfile             ← Koyeb/Heroku start command
+├── cookies.txt          ← YouTube cookies (optional)
+├── requirements.txt     ← Python dependencies
+├── core/
+│   ├── api.py           ← YouTube search + yt-dlp download
+│   ├── guards.py        ← Admin check + rate limiting
+│   ├── helpers.py       ← Formatting utilities
+│   └── playback.py      ← Music streaming core logic
+└── handlers/
+    ├── router.py        ← Registers all command handlers
+    ├── music.py         ← /play, /stop, /skip, /pause, /resume
+    ├── admin.py         ← /kick, /ban, /mute, /unmute
+    ├── system.py        ← /start, /ping, /clone, /active
+    └── callbacks.py     ← Inline button handler
+```
 
 ---
 
@@ -53,7 +83,6 @@
 <a href="https://deploy.kustbotsweb.workers.dev"><img src="https://img.shields.io/badge/-Deploy%20to%20Render-blueviolet?style=for-the-badge&logo=render"></a>
 <a href="https://deploy.kustbotsweb.workers.dev"><img src="https://img.shields.io/badge/-Deploy%20to%20Koyeb-green?style=for-the-badge&logo=koyeb"></a>
 <a href="https://deploy.kustbotsweb.workers.dev"><img src="https://img.shields.io/badge/-Deploy%20to%20Railway-cyan?style=for-the-badge&logo=railway"></a>
-<a href="https://deploy.kustbotsweb.workers.dev"><img src="https://img.shields.io/badge/-Deploy%20to%20Heroku-purple?style=for-the-badge&logo=heroku"></a>
 </p>
 
 <p align="center">
@@ -62,57 +91,55 @@
 
 ---
 
-## 🔴 Render Deployment Guide
+## 🔴 Deploy on Render
 
-> ⚠️ **IMPORTANT — Read before deploying on Render**
+> ⚠️ **IMPORTANT — Fork the repo first. Do NOT deploy directly from the original.**
 
-**Step 1 — Fork this repo**
-- Go to the top of this page and click **Fork**
-- Do NOT deploy directly from the original repo
+**Step 1 — Fork**
+- Click **Fork** at the top of this page
+- This creates your own copy you can deploy from
 
-**Step 2 — Customize your `main.py`**
-- You **MUST** modify `main.py` before deploying (see AI Customization below)
-- Direct copies from the same repo will trigger Render's duplicate detection
-
-**Step 3 — Connect to Render**
+**Step 2 — Connect to Render**
 1. Go to [dashboard.render.com](https://dashboard.render.com)
 2. Click **New +** → **Web Service**
 3. Select **"Build and deploy from a Git repository"**
 4. Connect your GitHub and select your **forked** repo
 5. Render auto-detects `render.yaml` — all settings are pre-configured
 
-**Step 4 — Set Environment Variables**
+**Step 3 — Set Environment Variables**
 
 Add these in Render's **Environment** tab:
 
 | Variable | Description | Required |
 |---|---|---|
 | `BOT_TOKEN` | Bot token from [@BotFather](https://t.me/BotFather) | ✅ |
-| `ASSISTANT_SESSION` | Pyrogram string session | ✅ |
+| `ASSISTANT_SESSION` | Pyrogram string session for userbot | ✅ |
 | `API_ID` | From [my.telegram.org](https://my.telegram.org) | ✅ |
 | `API_HASH` | From [my.telegram.org](https://my.telegram.org) | ✅ |
 | `OWNER_ID` | Your Telegram user ID | ✅ |
 | `SEARCH_API_URL` | Leave blank for default | ❌ |
 
-**Step 5 — Deploy**
-- Click **"Create Web Service"** and wait for the build to finish
+**Step 4 — Deploy**
+- Click **"Create Web Service"** — build takes ~3 minutes
+
+> 💡 **How to get ASSISTANT_SESSION:** Use [@StringFatherBot](https://t.me/StringFatherBot) to generate a Pyrogram string session from your Telegram account.
 
 ---
 
 ## 🤖 Clone System
 
-Once deployed, you can host **multiple bots from a single instance** using the `/clone` command.
+Once deployed, you can add **multiple bot instances** with `/clone`:
 
 ```
 /clone <BOT_TOKEN>
 ```
 
-- Send this command in **private chat** with your bot
-- Get bot tokens from [@BotFather](https://t.me/BotFather)
-- Each dyno supports up to **20 clones**
+- Send this in **private chat** with your deployed bot
+- Get new bot tokens from [@BotFather](https://t.me/BotFather)
 - Each clone runs independently with its own owner
+- No limit — add as many as you need
 
-**Check active clones:**
+**Check active bots:**
 ```
 /active
 ```
@@ -120,63 +147,63 @@ Once deployed, you can host **multiple bots from a single instance** using the `
 
 ---
 
-## 🍪 Cookies Setup (Optional but Recommended)
+## 🍪 Cookies Setup (Optional)
 
-Add a `cookies.txt` file to your repo to avoid YouTube rate limits.
+Add a `cookies.txt` to bypass YouTube rate limits and age restrictions.
 
-**How to export cookies:**
+**How to export:**
 1. Install **"Get cookies.txt LOCALLY"** extension on Chrome/Firefox
-2. Open [youtube.com](https://youtube.com) and log in
+2. Open [youtube.com](https://youtube.com) and log in to your account
 3. Click the extension → Export cookies for `youtube.com`
-4. Replace `cookies.txt` in the repo with your exported file
+4. Replace the `cookies.txt` in your forked repo with the exported file
 
-> ⚠️ Never share your `cookies.txt` publicly — it gives access to your YouTube account.
+> ⚠️ Never share your `cookies.txt` — it gives access to your YouTube account.
 
 ---
 
-## 🤖 AI Customization (Required for Cloud Deploy)
+## 🤖 AI Customization (Avoid Platform Bans)
 
-To avoid platform bans, each deployment must have a **unique `main.py`**. Use any AI to generate a variant:
+Each deployment needs a **unique codebase** to avoid platform duplicate detection. Use any AI to help:
 
-### Prompt to use with Claude / ChatGPT:
+### Prompt for Claude / ChatGPT:
 
 ```
-Please modify this main.py file for my Telegram music bot deployment.
-Make these changes while keeping all functionality intact:
+I have a modular Telegram music bot with these files:
+main.py, config.py, state.py, clients.py, server.py,
+core/api.py, core/guards.py, core/helpers.py, core/playback.py,
+handlers/router.py, handlers/music.py, handlers/admin.py,
+handlers/system.py, handlers/callbacks.py
 
-1. Rename variables and functions to unique names
-2. Restructure the code flow and reorganize function order
-3. Rewrite all comments in different wording
-4. Reorganize import structure
-5. Modify error/log messages to be unique
-6. Change any hardcoded defaults to slightly different values
-7. Rearrange the main() function logic
+Please help me make this deployment unique by:
+1. Renaming variables and functions to unique names across all files
+2. Rewriting log/error messages to be different
+3. Reorganizing code flow within functions (keeping same behavior)
+4. Changing any hardcoded string literals to different wording
 
-Keep everything working exactly the same — only change structure and naming
-to make this deployment unique and avoid duplicate detection.
+Keep all functionality exactly the same — only change names and structure
+to make this deployment unique. Show me each file separately.
 
-Here is my main.py:
-[PASTE YOUR main.py CONTENT HERE]
+Here are the files: [PASTE EACH FILE CONTENT]
 ```
 
 **Steps:**
-1. Go to [claude.ai](https://claude.ai) or [chatgpt.com](https://chatgpt.com)
-2. Paste the prompt above + your `main.py` content
-3. Get your unique version
-4. Replace `main.py` in your fork with the AI-generated version
+1. Open [claude.ai](https://claude.ai) or [chatgpt.com](https://chatgpt.com)
+2. Paste the prompt + all your file contents
+3. Get unique versions of each file
+4. Replace the files in your fork
 5. Deploy
 
 ---
 
-## 🛠️ Required Environment Variables
+## 🛠️ Environment Variables Reference
 
-Get your variables from [`kust.env`](https://github.com/kustbots/kustmusic/blob/master/kust.env)
+Copy [`kust.env`](https://github.com/kustbots/kustmusic/blob/master/kust.env) and rename it to `.env` for local/VPS use.
 
 **Test Bot ➣** [Kust Music](https://t.me/vcmusiclubot)
 
 ---
 
-<h3 align="center">─「 ᴅᴇᴩʟᴏʏ ᴏɴ ʟᴏᴄᴀʟ ʜᴏsᴛ / ᴠᴘs 」─</h3>
+<h3 align="center">─「 ᴅᴇᴩʟᴏʏ ᴏɴ ᴠᴘs / ʟᴏᴄᴀʟ 」─</h3>
 
 <p align="center">
 <a href="https://www.youtube.com/watch?v=LSlKMWmhh20"><img src="https://img.shields.io/badge/Watch%20on-YouTube-red?style=for-the-badge&logo=youtube" alt="YouTube Tutorial"/></a>
@@ -184,50 +211,40 @@ Get your variables from [`kust.env`](https://github.com/kustbots/kustmusic/blob/
 
 ### 🔧 VPS Setup
 
-1. **Upgrade & Update**
+1. **Update system**
    ```bash
    sudo apt-get update && sudo apt-get upgrade -y
    ```
 
-2. **Install Required Packages**
+2. **Install dependencies**
    ```bash
    sudo apt-get install python3-pip ffmpeg -y
    ```
 
-3. **Setup PIP**
-   ```bash
-   sudo pip3 install -U pip
-   ```
-
-4. **Install Node**
-   ```bash
-   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash && source ~/.bashrc && nvm install v18
-   ```
-
-5. **Clone the Repository**
+3. **Clone the repo**
    ```bash
    git clone https://github.com/kustbots/kustmusic && cd kustmusic
    ```
 
-6. **Install Requirements**
+4. **Install Python packages**
    ```bash
    pip3 install -U -r requirements.txt
    ```
 
-7. **Setup Environment**
+5. **Setup environment**
    ```bash
    cp kust.env .env
-   vi .env
+   nano .env
    ```
-   - Press `I` to start editing
-   - Fill in your variables
-   - Press `Ctrl + C` then type `:wq` to save
+   Fill in your variables, then `Ctrl+X` → `Y` → Enter to save.
 
-8. **Run with tmux**
+6. **Run with tmux**
    ```bash
-   sudo apt install tmux -y && tmux
+   sudo apt install tmux -y
+   tmux new -s music
    python3 main.py
    ```
+   Press `Ctrl+B` then `D` to detach (bot keeps running).
 
 ---
 
@@ -242,8 +259,8 @@ Get your variables from [`kust.env`](https://github.com/kustbots/kustmusic/blob/
 | `/resume` | Resume playback | Admins |
 | `/clear` | Clear the queue | Admins |
 | `/ping` | Bot stats and latency | Everyone |
-| `/clone <token>` | Clone a new bot instance | Anyone (private) |
-| `/active` | List all active clones | Main Owner |
+| `/clone <token>` | Add a new bot instance | Anyone (private) |
+| `/active` | List all active bots | Main Owner |
 | `/kick` | Kick a user (reply) | Admins |
 | `/ban` | Ban a user (reply) | Admins |
 | `/unban` | Unban a user (reply) | Admins |
@@ -260,5 +277,5 @@ Get your variables from [`kust.env`](https://github.com/kustbots/kustmusic/blob/
 </p>
 
 <p align="center">
-<b>Special Thanks to <a href="https://github.com/kustbots">KustBots</a> for <a href="https://github.com/kustbots/kustmusic">Kust Music Bot</a></b>
+<b>Made with ❤️ by <a href="https://github.com/kustbots">KustBots</a></b>
 </p>

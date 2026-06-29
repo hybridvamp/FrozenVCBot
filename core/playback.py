@@ -45,10 +45,10 @@ async def update_progress_caption(chat_id, message, start_time, total_duration, 
             new_keyboard = InlineKeyboardMarkup([
                 [InlineKeyboardButton(text=progress_bar, callback_data="progress")],
                 [
-                    InlineKeyboardButton(text="▷", callback_data="resume"),
-                    InlineKeyboardButton(text="II", callback_data="pause"),
-                    InlineKeyboardButton(text="‣‣I", callback_data="skip"),
-                    InlineKeyboardButton(text="▢", callback_data="stop"),
+                    InlineKeyboardButton(text="▶️ Play", callback_data="resume"),
+                    InlineKeyboardButton(text="⏸ Pause", callback_data="pause"),
+                    InlineKeyboardButton(text="⏭ Skip", callback_data="skip"),
+                    InlineKeyboardButton(text="⏹ Stop", callback_data="stop"),
                 ],
             ])
 
@@ -180,19 +180,18 @@ async def play_music_core(client, chat_id, song_info, status_msg=None, retry_att
         total_duration = parse_duration_str(song_info.get("duration", "0"))
 
         base_caption = (
-            "<blockquote>"
-            f"<b>🎧 {bot_name} ✘ ᴍᴜsɪᴄ sᴛʀєᴀᴍɪɴɢ ⏤͟͞●</b></blockquote>\n\n"
-            f"<blockquote>❍ <b>ᴛɪᴛʟᴇ:</b> {title_short}\n"
-            f"❍ <b>ʀᴇǫᴜᴇsᴛᴇᴅ ʙʏ:</b> {song_info['req']}</blockquote>"
+            f"<blockquote><b>🎧 {bot_name} · ᴍᴜsɪᴄ sᴛʀєᴀᴍɪɴɢ</b></blockquote>\n\n"
+            f"<blockquote>🎵 <b>ᴛɪᴛʟᴇ:</b> {title_short}\n"
+            f"👤 <b>ʀᴇǫᴜᴇsᴛᴇᴅ ʙʏ:</b> {song_info['req']}</blockquote>"
         )
 
         control_buttons = InlineKeyboardMarkup([
             [InlineKeyboardButton(text=get_progress_bar(0, total_duration), callback_data="progress")],
             [
-                InlineKeyboardButton(text="▷", callback_data="resume"),
-                InlineKeyboardButton(text="II", callback_data="pause"),
-                InlineKeyboardButton(text="‣‣I", callback_data="skip"),
-                InlineKeyboardButton(text="▢", callback_data="stop"),
+                InlineKeyboardButton(text="▶️ Play", callback_data="resume"),
+                InlineKeyboardButton(text="⏸ Pause", callback_data="pause"),
+                InlineKeyboardButton(text="⏭ Skip", callback_data="skip"),
+                InlineKeyboardButton(text="⏹ Stop", callback_data="stop"),
             ],
         ])
 
