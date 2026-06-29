@@ -7,7 +7,7 @@ from pyrogram.enums import ParseMode
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 import state
-from config import API_ID, API_HASH, CURRENT_DYNO, DOWNLOAD_API_BASE, MAIN_OWNER, MAX_BOTS_PER_DYNO
+from config import API_ID, API_HASH, CURRENT_DYNO, MAIN_OWNER, MAX_BOTS_PER_DYNO, SEARCH_API_URL
 from core.guards import check_abuse
 from core.helpers import get_readable_time, to_bold_unicode
 
@@ -21,7 +21,7 @@ async def ping_handler(client, message):
     try:
         api_start = time.time()
         async with aiohttp.ClientSession() as session:
-            async with session.get(DOWNLOAD_API_BASE, timeout=aiohttp.ClientTimeout(total=5)):
+            async with session.get(SEARCH_API_URL, timeout=aiohttp.ClientTimeout(total=5)):
                 pass
         api_ping = f"{round((time.time() - api_start) * 1000)}ms"
     except Exception:
@@ -35,7 +35,7 @@ async def ping_handler(client, message):
     msg = (
         f"🏓 **Pong!**\n\n"
         f"📱 **Telegram Latency:** `{tg_ping}ms`\n"
-        f"📥 **Download API:** `{api_ping}`\n\n"
+        f"🔍 **Search API:** `{api_ping}`\n\n"
         f"💻 **System Stats:**\n"
         f"├ **Uptime:** `{uptime}`\n"
         f"├ **CPU:** `{cpu}%`\n"
@@ -60,6 +60,7 @@ async def start_handler(client, message):
         f"✨ **Premium Music Experience**\n"
         f"🎧 **Audio:** High Stability Playback\n"
         f"🛡️ **Security:** Built-in Group Protection\n"
+        f"🤖 **Clone System:** Host your own instance\n"
         f"━━━━━━━━━━━━━━━━━━━━━━\n"
         f"💡 _Click the buttons below to explore!_"
     )
@@ -78,7 +79,13 @@ async def start_handler(client, message):
 async def clone_command(client, message):
     user_id = message.from_user.id
     if len(message.command) < 2:
-        return await message.reply_text("❌ **Usage:** `/clone <BOT_TOKEN>`")
+        return await message.reply_text(
+            "❌ **Usage:** `/clone <BOT_TOKEN>`\n\n"
+            "📖 **How to get a bot token:**\n"
+            "1. Open [@BotFather](https://t.me/BotFather)\n"
+            "2. Send `/newbot` and follow the steps\n"
+            "3. Copy the token and send it here"
+        )
 
     token = message.command[1]
     clones_on_dyno = [c for c in state.active_clients.values() if not getattr(c, "is_main", False)]
@@ -100,9 +107,11 @@ async def clone_command(client, message):
         state.active_clients[me.id] = new_client
 
         await status.edit_text(
-            f"✅ **Bot @{me.username} cloned successfully!**\n"
-            f"👑 **Owner ID:** `{user_id}`\n"
-            f"🖥 **Dyno:** `{CURRENT_DYNO}`"
+            f"✅ **Bot Cloned Successfully!**\n\n"
+            f"🤖 **Bot:** @{me.username}\n"
+            f"👑 **Owner:** `{user_id}`\n"
+            f"🖥 **Dyno:** `{CURRENT_DYNO}`\n"
+            f"🔢 **Active Clones:** `{len(clones_on_dyno) + 1}/{MAX_BOTS_PER_DYNO}`"
         )
     except Exception as e:
         await status.edit_text(f"❌ **Failed to clone:** `{e}`")

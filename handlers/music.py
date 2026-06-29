@@ -14,9 +14,6 @@ from core.playback import play_music_core
 async def play_command(client, message):
     chat_id = message.chat.id
 
-    if chat_id not in [-1001849376366, -1003707613285]:
-        return await message.reply_text("its a private bot .. access is restricted")
-
     if await check_abuse(message.from_user.id):
         return await message.reply_text("⏳ **Slow down.**")
 

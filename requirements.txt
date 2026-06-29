@@ -7,3 +7,4 @@ pillow
 psutil
 python-dotenv
 aiofiles
+yt-dlp

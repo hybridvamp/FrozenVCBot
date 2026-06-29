@@ -1,9 +1,12 @@
+import asyncio
+import os
 import time
 import urllib.parse
 
 import aiohttp
+import yt_dlp
 
-from config import DOWNLOAD_API_BASE, SEARCH_API_URL
+from config import COOKIES_FILE, SEARCH_API_URL
 
 
 async def fetch_youtube_link(query):
@@ -22,17 +25,38 @@ async def fetch_youtube_link(query):
         return None
 
 
+def _yt_download(youtube_url, output_template):
+    ydl_opts = {
+        "format": "bestaudio/best",
+        "outtmpl": output_template,
+        "postprocessors": [{
+            "key": "FFmpegExtractAudio",
+            "preferredcodec": "mp3",
+            "preferredquality": "192",
+        }],
+        "quiet": True,
+        "no_warnings": True,
+        "noplaylist": True,
+    }
+    if os.path.exists(COOKIES_FILE):
+        ydl_opts["cookiefile"] = COOKIES_FILE
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        ydl.download([youtube_url])
+
+
 async def download_song(youtube_url):
     try:
-        file_name = f"downloads/{time.time()}.mp3"
-        download_url = f"{DOWNLOAD_API_BASE}{youtube_url}"
-        async with aiohttp.ClientSession() as session:
-            async with session.get(download_url, timeout=aiohttp.ClientTimeout(total=600)) as response:
-                if response.status == 200:
-                    with open(file_name, "wb") as f:
-                        async for chunk in response.content.iter_chunked(1024):
-                            f.write(chunk)
-                    return file_name
+        unique = str(time.time())
+        output_template = f"downloads/{unique}.%(ext)s"
+        final_path = f"downloads/{unique}.mp3"
+        loop = asyncio.get_event_loop()
+        await loop.run_in_executor(None, _yt_download, youtube_url, output_template)
+        if os.path.exists(final_path):
+            return final_path
+        for ext in ["m4a", "webm", "opus", "ogg"]:
+            alt = f"downloads/{unique}.{ext}"
+            if os.path.exists(alt):
+                return alt
         return None
     except Exception:
         return None

@@ -3,7 +3,7 @@ services:
     name: kust-music-bot
     env: python
     plan: free
-    buildCommand: "pip install -r requirements.txt"
+    buildCommand: "apt-get install -y ffmpeg && pip install -r requirements.txt"
     startCommand: "python main.py"
     envVars:
       - key: API_ID
@@ -17,6 +17,4 @@ services:
       - key: OWNER_ID
         sync: false
       - key: SEARCH_API_URL
-        sync: false
-      - key: DOWNLOAD_API_BASE
         sync: false
