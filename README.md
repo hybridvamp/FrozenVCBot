@@ -80,9 +80,10 @@ kustmusic/
 ## 💡 Quick Deploy
 
 <p align="center">
-<a href="https://deploy.kustbotsweb.workers.dev"><img src="https://img.shields.io/badge/-Deploy%20to%20Render-blueviolet?style=for-the-badge&logo=render"></a>
-<a href="https://deploy.kustbotsweb.workers.dev"><img src="https://img.shields.io/badge/-Deploy%20to%20Koyeb-green?style=for-the-badge&logo=koyeb"></a>
-<a href="https://deploy.kustbotsweb.workers.dev"><img src="https://img.shields.io/badge/-Deploy%20to%20Railway-cyan?style=for-the-badge&logo=railway"></a>
+<a href="https://render.com/deploy?repo=https://github.com/kustbots/kustmusic"><img src="https://img.shields.io/badge/-Deploy%20to%20Render-blueviolet?style=for-the-badge&logo=render"></a>
+<a href="https://app.koyeb.com/deploy?type=git&repository=github.com/kustbots/kustmusic&branch=main&name=kust-music"><img src="https://img.shields.io/badge/-Deploy%20to%20Koyeb-green?style=for-the-badge&logo=koyeb"></a>
+<a href="https://railway.app/new?template=https://github.com/kustbots/kustmusic"><img src="https://img.shields.io/badge/-Deploy%20to%20Railway-cyan?style=for-the-badge&logo=railway"></a>
+<a href="https://heroku.com/deploy?template=https://github.com/kustbots/kustmusic"><img src="https://img.shields.io/badge/-Deploy%20to%20Heroku-purple?style=for-the-badge&logo=heroku"></a>
 </p>
 
 <p align="center">
