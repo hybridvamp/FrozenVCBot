@@ -73,7 +73,6 @@ def _yt_download(youtube_url, output_template):
         "quiet": True,
         "no_warnings": True,
         "noplaylist": True,
-        "js_runtimes": "deno",
         "extractor_args": {
             "youtube": {
                 "player_client": ["web", "mweb", "android"],

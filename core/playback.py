@@ -50,6 +50,23 @@ async def _try_join_assistant(client, chat_id, status_msg):
         return False
 
 
+def _build_control_keyboard(chat_id, progress_bar):
+    is_paused = chat_id in state.paused_chats
+    toggle_btn = (
+        InlineKeyboardButton(text="▶️ Resume", callback_data="resume")
+        if is_paused else
+        InlineKeyboardButton(text="⏸ Pause", callback_data="pause")
+    )
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton(text=progress_bar, callback_data="progress")],
+        [toggle_btn],
+        [
+            InlineKeyboardButton(text="⏭ Skip", callback_data="skip"),
+            InlineKeyboardButton(text="⏹ Stop", callback_data="stop"),
+        ],
+    ])
+
+
 async def update_progress_caption(chat_id, message, start_time, total_duration, base_caption):
     try:
         while True:
@@ -58,15 +75,7 @@ async def update_progress_caption(chat_id, message, start_time, total_duration, 
                 elapsed = total_duration
 
             progress_bar = get_progress_bar(elapsed, total_duration)
-            new_keyboard = InlineKeyboardMarkup([
-                [InlineKeyboardButton(text=progress_bar, callback_data="progress")],
-                [
-                    InlineKeyboardButton(text="▶️ Play", callback_data="resume"),
-                    InlineKeyboardButton(text="⏸ Pause", callback_data="pause"),
-                    InlineKeyboardButton(text="⏭ Skip", callback_data="skip"),
-                    InlineKeyboardButton(text="⏹ Stop", callback_data="stop"),
-                ],
-            ])
+            new_keyboard = _build_control_keyboard(chat_id, progress_bar)
 
             try:
                 await message.edit_caption(
@@ -134,6 +143,7 @@ async def play_music_core(client, chat_id, song_info, status_msg=None, retry_att
         if chat_id in state.progress_tasks:
             state.progress_tasks[chat_id].cancel()
             del state.progress_tasks[chat_id]
+        state.paused_chats.discard(chat_id)
 
         bot_name = client.me.first_name or "Music Bot"
         title_short = one_line_title(song_info["title"])
@@ -145,15 +155,7 @@ async def play_music_core(client, chat_id, song_info, status_msg=None, retry_att
             f"👤 <b>ʀᴇǫᴜᴇsᴛᴇᴅ ʙʏ:</b> {song_info['req']}</blockquote>"
         )
 
-        control_buttons = InlineKeyboardMarkup([
-            [InlineKeyboardButton(text=get_progress_bar(0, total_duration), callback_data="progress")],
-            [
-                InlineKeyboardButton(text="▶️ Play", callback_data="resume"),
-                InlineKeyboardButton(text="⏸ Pause", callback_data="pause"),
-                InlineKeyboardButton(text="⏭ Skip", callback_data="skip"),
-                InlineKeyboardButton(text="⏹ Stop", callback_data="stop"),
-            ],
-        ])
+        control_buttons = _build_control_keyboard(chat_id, get_progress_bar(0, total_duration))
 
         if status_msg:
             await status_msg.delete()

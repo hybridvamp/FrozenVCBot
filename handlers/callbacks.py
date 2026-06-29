@@ -4,7 +4,6 @@ from pyrogram.enums import ParseMode
 from pyrogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 
 import state
-from config import MAIN_OWNER
 from core.guards import is_admin
 from core.playback import play_music_core
 from handlers.music import clear_command, pause_command, resume_command, skip_command, stop_command

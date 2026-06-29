@@ -76,6 +76,7 @@ async def stop_command(client, message):
         state.progress_tasks[chat_id].cancel()
         del state.progress_tasks[chat_id]
     state.chat_queues.pop(chat_id, None)
+    state.paused_chats.discard(chat_id)
     try:
         await call_py.leave_call(chat_id)
     except Exception:
@@ -90,6 +91,7 @@ async def skip_command(client, message):
     if chat_id in state.progress_tasks:
         state.progress_tasks[chat_id].cancel()
         del state.progress_tasks[chat_id]
+    state.paused_chats.discard(chat_id)
 
     if chat_id in state.chat_queues and state.chat_queues[chat_id]:
         done = state.chat_queues[chat_id].pop(0)
@@ -128,6 +130,7 @@ async def pause_command(client, message):
         return
     try:
         await call_py.pause(message.chat.id)
+        state.paused_chats.add(message.chat.id)
         await message.reply_text("⏸ **Paused.**")
     except Exception:
         pass
@@ -138,6 +141,7 @@ async def resume_command(client, message):
         return
     try:
         await call_py.resume(message.chat.id)
+        state.paused_chats.discard(message.chat.id)
         await message.reply_text("▶️ **Resumed.**")
     except Exception:
         pass

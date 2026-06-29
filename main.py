@@ -1,6 +1,8 @@
 import asyncio
 import logging
 import os
+import subprocess
+import threading
 
 from pyrogram import filters, idle
 from pyrogram.handlers import MessageHandler
@@ -25,6 +27,26 @@ if YOUTUBE_COOKIES:
     with open(COOKIES_FILE, "w", encoding="utf-8") as _cf:
         _cf.write(YOUTUBE_COOKIES)
     logger.info(f"Cookies written to {COOKIES_FILE} from YOUTUBE_COOKIES env")
+
+
+def _init_ejs_solver():
+    try:
+        result = subprocess.run(["deno", "--version"], capture_output=True, text=True)
+        if result.returncode == 0:
+            logger.info(f"Deno detected: {result.stdout.strip()}")
+        else:
+            logger.warning("Deno not found in PATH — yt-dlp JS challenges may fail")
+        subprocess.run(["yt-dlp", "--rm-cache-dir"], check=False, capture_output=True)
+        subprocess.run(
+            ["yt-dlp", "--remote-components", "ejs:github",
+             "--simulate", "https://www.youtube.com/watch?v=dQw4w9WgXcQ"],
+            check=False, capture_output=True,
+        )
+        logger.info("yt-dlp EJS solver initialized")
+    except Exception as e:
+        logger.warning(f"EJS solver init failed: {e}")
+
+threading.Thread(target=_init_ejs_solver, daemon=True).start()
 
 
 async def main():

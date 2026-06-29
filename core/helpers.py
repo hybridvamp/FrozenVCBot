@@ -54,7 +54,7 @@ def get_progress_bar(elapsed, total, bar_length=14):
     marker_index = min(int(fraction * bar_length), bar_length - 1)
     left = "━" * marker_index
     right = "─" * (bar_length - marker_index - 1)
-    return f"{format_time(elapsed)} {left}🎵{right} {format_time(total)}"
+    return f"{format_time(elapsed)} {left}❄️{right} {format_time(total)}"
 
 
 def get_readable_time(seconds):
