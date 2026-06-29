@@ -1,17 +1,9 @@
 git+https://github.com/prashantsahlot/FrozenGram.git
 py-tgcalls
-yt-dlp
 aiohttp
-flask
-Flask-RESTful
 tgcrypto
-ffmpeg-python
 isodate
 pillow
 psutil
-requests
 python-dotenv
-asyncpg
-pymongo
 aiofiles
-gender-guesser
