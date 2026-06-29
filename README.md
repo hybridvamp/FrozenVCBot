@@ -46,6 +46,34 @@
 
 ---
 
+## 🔴 Render Deployment Guide
+
+**⚠️ IMPORTANT:** To deploy on **Render**, you must follow these steps:
+
+1. **Import the Repository to Render:**
+   - Go to [Render Dashboard](https://dashboard.render.com)
+   - Click **"New +"** → **"Web Service"**
+   - Select **"Deploy an existing repository"**
+   - Connect your GitHub and select the **kustmusic** repo
+
+2. **Modify main.py for Render:**
+   - You **MUST** modify the `main.py` file to work on Render
+   - Change the host configuration from `localhost` to `0.0.0.0`
+   - Update any hardcoded local paths to use environment variables
+   - Ensure the bot can bind to the port provided by Render (`$PORT` environment variable)
+
+3. **Set Environment Variables:**
+   - Add all required variables from `kust.env` in Render's **Environment** settings
+   - Never hardcode sensitive data
+
+4. **Deploy:**
+   - Set the start command to: `python3 main.py`
+   - Click **"Deploy Web Service"**
+
+⚠️ **Without modifying main.py, the deployment will fail!**
+
+---
+
 ## 🛠️ Required environment variables
 
 
@@ -126,4 +154,4 @@
 <a href="https://t.me/Frozensupport1"><img src="https://img.shields.io/badge/-Support%20Channel-blue.svg?style=for-the-badge&logo=Telegram"></a>
 </p>
 
-- <b> _sᴩᴇᴄɪᴀʟ ᴛʜᴀɴᴋs ᴛᴏ [KustBots](https://github.com/kustbots) ғᴏʀ [ᴍᴜsɪᴄ ʙᴏᴛ](https://github.com/kustbots/frozenvcmusicbot)_</b>
+- <b> _sᴩᴇᴄɪᴀʟ ᴛʜᴀɴᴋs ᴛᴏ [KustBots](https://github.com/kustbots) ғᴏʀ [ᴍᴜsɪᴄ ʙᴏᴛ](https://github.com/kustbots/kustmusic)_</b>
