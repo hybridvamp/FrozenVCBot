@@ -1,16 +1,16 @@
 <h2 align="center">
-    ──「 ⛦🦋 Frozen Music 🦋⛦ 」──
+    ──「 ⛦🦋 Kust Music 🦋⛦ 」──
 </h2>
 
 <p align="center">
   <img src="https://files.catbox.moe/836l2k.jpg">
 </p>
 <p align="center">
-<a href="https://github.com/kustbots//frozenvcmusicbot/stargazers"><img src="https://img.shields.io/github/stars/prashantsahlot/frozenvcmusicbot?color=black&logo=github&logoColor=black&style=for-the-badge" alt="Stars" /></a>
-<a href="https://github.com/kustbots//frozenvcmusicbot/network/members"> <img src="https://img.shields.io/github/forks/prashantsahlot/frozenvcmusicbot?color=black&logo=github&logoColor=black&style=for-the-badge" /></a>
-<a href="https://github.com/kustbots//frozenvcmusicbot/blob/master/LICENSE"> <img src="https://img.shields.io/badge/License-Frozen%20Protect-blueviolet?style=for-the-badge" alt="License" /> </a>
+<a href="https://github.com/kustbots/kustmusic/stargazers"><img src="https://img.shields.io/github/stars/kustbots/kustmusic?color=black&logo=github&logoColor=black&style=for-the-badge" alt="Stars" /></a>
+<a href="https://github.com/kustbots/kustmusic/network/members"> <img src="https://img.shields.io/github/forks/kustbots/kustmusic?color=black&logo=github&logoColor=black&style=for-the-badge" /></a>
+<a href="https://github.com/kustbots/kustmusic/blob/master/LICENSE"> <img src="https://img.shields.io/badge/License-Kust%20Protect-blueviolet?style=for-the-badge" alt="License" /> </a>
 <a href="https://www.python.org/"> <img src="https://img.shields.io/badge/Written%20in-Python-orange?style=for-the-badge&logo=python" alt="Python" /> </a>
-<a href="https://github.com/kustbots/frozenvcmusicbot/commits/main"> <img src="https://img.shields.io/github/last-commit/prashantsahlot/frozenvcmusicbot?color=blue&logo=github&logoColor=green&style=for-the-badge" /></a>
+<a href="https://github.com/kustbots/kustmusic/commits/main"> <img src="https://img.shields.io/github/last-commit/kustbots/kustmusic?color=blue&logo=github&logoColor=green&style=for-the-badge" /></a>
 </p>
 
 ---
@@ -21,7 +21,7 @@
 - 💥 Fully open source and free.
 - ☁️ Can run easily on **Render**, **Koyeb**, or your VPS.
 - 🌱 Easy to set up with one-click deploy buttons.
-- ❄️ Uses custom FrozenGram fork for enhanced stability.
+- ❄️ Uses custom KustGram fork for enhanced stability.
 
 ---
 
@@ -41,7 +41,7 @@
 ## ⚡ One-click Setup
 
 <p align="center">
-<a href="https://github.com/kustbots/frozenvcmusicbot/fork"><img src="https://img.shields.io/badge/-Fork%20Repo-black?style=for-the-badge&logo=github"></a>
+<a href="https://github.com/kustbots/kustmusic/fork"><img src="https://img.shields.io/badge/-Fork%20Repo-black?style=for-the-badge&logo=github"></a>
 </p>
 
 ---
@@ -51,7 +51,7 @@
 
 
 
-**𝙏𝙀𝙎𝙏 𝘽𝙊𝙏 ➣ [frzoen music](https://t.me/vcmusiclubot)**
+**𝙏𝙀𝙎𝙏 𝘽𝙊𝙏 ➣ [kust music](https://t.me/vcmusiclubot)**
 
 
 
@@ -59,7 +59,7 @@
     ─「 ᴅᴇᴩʟᴏʏ ᴏɴ ʟᴏᴄᴀʟ ʜᴏsᴛ/ ᴠᴘs 」─
 </h3>
 
-- Get your [Necessary Variables](https://github.com/kustbots/frozenvcmusicbot/blob/master/frozen.env)
+- Get your [Necessary Variables](https://github.com/kustbots/kustmusic/blob/master/kust.env)
 - <p align="center">
 <a href="https://www.youtube.com/watch?v=LSlKMWmhh20"><img src="https://img.shields.io/badge/Watch%20on-YouTube-red?style=for-the-badge&logo=youtube" alt="YouTube Tutorial"/></a>
 </p>
@@ -87,7 +87,7 @@
    ```
 5. **Clone the Repository**
    ```bash
-   git clone https://github.com/kustbots/frozenvcmusicbot && cd frozenvcmusicbot
+   git clone https://github.com/kustbots/kustmusic && cd kustmusic
    ```
 6. **Install Requirements**
    ```bash
@@ -95,7 +95,7 @@
    ```
 7. **Create .env  with sample.env**
    ```bash
-   cp frozen.env .env
+   cp kust.env .env
    ```
    - Edit .env with your vars
 8. **Editing Vars:**
