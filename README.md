@@ -120,7 +120,7 @@ Add these in Render's **Environment** tab:
 | `OWNER_ID` | Your Telegram user ID | ✅ |
 | `SEARCH_API_URL` | Leave blank for default search API | ❌ |
 | `DOWNLOAD_API_BASE` | Your download API base URL — leave blank to use yt-dlp | ❌ |
-| `COOKIES_FILE` | Path to cookies.txt — leave blank to disable | ❌ |
+| `YOUTUBE_COOKIES` | Paste your raw YouTube cookies here (see below) | ❌ |
 
 **Step 4 — Deploy**
 - Click **"Create Web Service"** — build takes ~3 minutes
@@ -152,15 +152,21 @@ Once deployed, you can add **multiple bot instances** with `/clone`:
 
 ## 🍪 Cookies Setup (Optional)
 
-Add a `cookies.txt` to bypass YouTube rate limits and age restrictions.
+Add YouTube cookies to bypass rate limits and age restrictions. No file needed — just paste the content directly as an environment variable.
 
-**How to export:**
+**How to get your cookies:**
 1. Install **"Get cookies.txt LOCALLY"** extension on Chrome/Firefox
-2. Open [youtube.com](https://youtube.com) and log in to your account
+2. Open [youtube.com](https://youtube.com) and log in
 3. Click the extension → Export cookies for `youtube.com`
-4. Replace the `cookies.txt` in your forked repo with the exported file
+4. Open the exported file in any text editor and **copy all the text**
 
-> ⚠️ Never share your `cookies.txt` — it gives access to your YouTube account.
+**How to set it:**
+- On **Render / Koyeb / Railway / Heroku**: go to your service's **Environment Variables**, add `YOUTUBE_COOKIES` and paste the full cookie text as the value
+- On **VPS**: open your `.env` file and set `YOUTUBE_COOKIES=<paste here>` (use quotes if the text has newlines)
+
+The bot writes the cookies to disk on startup automatically — no file upload needed.
+
+> ⚠️ Never share your cookies publicly — they give access to your YouTube account.
 
 ---
 

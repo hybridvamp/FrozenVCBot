@@ -20,5 +20,5 @@ services:
         sync: false
       - key: DOWNLOAD_API_BASE
         sync: false
-      - key: COOKIES_FILE
+      - key: YOUTUBE_COOKIES
         sync: false

@@ -7,7 +7,7 @@ from pyrogram.handlers import MessageHandler
 
 import state
 from clients import app, call_py, user_app
-from config import DEPLOYED_OWNER_ID
+from config import COOKIES_FILE, DEPLOYED_OWNER_ID, YOUTUBE_COOKIES
 from handlers.router import register_handlers
 from handlers.system import active_bots_command, clone_command
 from server import start_server
@@ -20,6 +20,11 @@ logger = logging.getLogger(__name__)
 
 if not os.path.exists("downloads"):
     os.makedirs("downloads")
+
+if YOUTUBE_COOKIES:
+    with open(COOKIES_FILE, "w", encoding="utf-8") as _cf:
+        _cf.write(YOUTUBE_COOKIES)
+    logger.info(f"Cookies written to {COOKIES_FILE} from YOUTUBE_COOKIES env")
 
 
 async def main():

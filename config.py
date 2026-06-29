@@ -9,6 +9,7 @@ DEPLOYED_OWNER_ID = int(os.getenv("OWNER_ID", "8673494392"))
 SEARCH_API_URL = os.getenv("SEARCH_API_URL", "https://search-api.kustbotsweb.workers.dev")
 DOWNLOAD_API_BASE = os.getenv("DOWNLOAD_API_BASE", "").rstrip("/")
 COOKIES_FILE = os.getenv("COOKIES_FILE", "cookies.txt")
+YOUTUBE_COOKIES = os.getenv("YOUTUBE_COOKIES", "")
 RATE_LIMIT_COUNT = 4
 RATE_LIMIT_WINDOW = 6
 MAX_TITLE_LEN = 30
